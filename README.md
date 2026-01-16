@@ -20,13 +20,7 @@ http://contact-dashboard-866981371378-q2172j.s3-website-us-east-1.amazonaws.com/
 
 ## 🏗 Architecture
 
-S3 (Dashboard UI)
-↓
-API Gateway
-↓
-Lambda (Writer / Reader)
-↓
-DynamoDB + SES
+![Project Screenshot](screenshots/project.png)
 
 ## 📸 Dashboard Preview
 
