@@ -1,0 +1,5 @@
+{
+  "body": "{\"name\": \"John Doe\", \"email\": \"john@example.com\", \"subject\": \"Hello\", \"message\": \"Testing DynamoDB save + email.\"}",
+  "headers": {"User-Agent": "curl"},
+  "requestContext": {"identity": {"sourceIp": "127.0.0.1"}}
+}

@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowWriteSubmissions",
+      "Effect": "Allow",
+      "Action": ["dynamodb:PutItem"],
+      "Resource": "arn:aws:dynamodb:us-east-1:866981371378:table/contact-form-submissions-q2172j"
+    },
+    {
+      "Sid": "AllowReadSubmissions",
+      "Effect": "Allow",
+      "Action": ["dynamodb:Query"],
+      "Resource": "arn:aws:dynamodb:us-east-1:866981371378:table/contact-form-submissions-q2172j"
+    }
+  ]
+}

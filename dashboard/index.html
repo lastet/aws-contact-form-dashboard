@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact Form Dashboard 🦄🍓</title>
+  <style>
+    :root{
+      --bg1:#fff7fb; --bg2:#f7f2ff; --card:#ffffffcc; --border:#f0d7e7;
+      --text:#1d1b24; --muted:#5e5a6a; --shadow:0 10px 30px rgba(40,20,60,.10);
+      --pill:#ffffffb8; --accent:#ff5da8; --accent2:#7a5cff;
+      --radius:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, #ffe8f4 0%, transparent 60%),
+        radial-gradient(1200px 600px at 80% 0%, #efe9ff 0%, transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+    }
+    .wrap{max-width:1120px;margin:0 auto;padding:28px 18px 40px}
+    .top{
+      display:flex; gap:14px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;
+    }
+    h1{margin:0;font-size:44px;letter-spacing:-.02em;line-height:1.05}
+    .sub{margin-top:8px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border:1px solid var(--border);border-radius:999px;
+      background:var(--pill);
+      box-shadow:0 6px 16px rgba(20,10,40,.06);
+      font-size:13px;color:var(--muted)
+    }
+    .dot{width:10px;height:10px;border-radius:50%;}
+    .dot.idle{background:#c9c6d6}
+    .dot.ok{background:#3bd671}
+    .dot.bad{background:#ff4d6d}
+    .rightPills{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1.1fr 1fr 1fr 1.2fr;
+      gap:14px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:14px 16px;
+      backdrop-filter: blur(8px);
+    }
+    .k{font-size:13px;color:var(--muted);margin-bottom:8px}
+    .v{font-size:40px;font-weight:800;letter-spacing:-.02em}
+    .controls{
+      display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap
+    }
+    input[type="number"]{
+      width:88px;padding:10px 12px;border-radius:14px;border:1px solid var(--border);
+      outline:none;background:#fff; font-size:14px;
+    }
+    button{
+      appearance:none;border:1px solid var(--border);background:#fff;
+      border-radius:14px;padding:10px 12px;font-weight:700;cursor:pointer;
+      box-shadow:0 6px 16px rgba(20,10,40,.08);
+      transition:transform .06s ease, box-shadow .06s ease, border-color .2s ease;
+      user-select:none;
+    }
+    button:hover{transform:translateY(-1px); box-shadow:0 10px 22px rgba(20,10,40,.10)}
+    button:active{transform:translateY(0px)}
+    .btnAccent{
+      border-color:#ffd1e6;
+      background: linear-gradient(135deg, #fff 0%, #fff0f8 55%, #f3edff 100%);
+    }
+    .btnTest{
+      border-color:#e9ddff;
+      background: linear-gradient(135deg, #fff 0%, #f6f0ff 60%, #fff0f7 100%);
+      position:relative;
+    }
+    .btnTest:after{
+      content:"";
+      position:absolute; inset:-1px;
+      border-radius:14px;
+      background: radial-gradient(120px 60px at 20% 20%, rgba(255,93,168,.30), transparent 60%),
+                  radial-gradient(120px 60px at 80% 40%, rgba(122,92,255,.28), transparent 60%);
+      pointer-events:none;
+      opacity:.45;
+    }
+
+    .big{
+      margin-top:14px;
+      padding:14px 16px;
+    }
+    textarea{
+      width:100%; min-height:84px; resize:vertical;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:12px 12px;
+      font-family:var(--mono);
+      font-size:13px;
+      outline:none;
+      background:#fff;
+    }
+    .hintRow{
+      margin-top:10px;
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      color:var(--muted); font-size:13px;
+    }
+    .chip{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border:1px solid var(--border);
+      border-radius:999px;background:#fff;
+    }
+    .tableCard{margin-top:14px}
+    table{width:100%; border-collapse:separate; border-spacing:0}
+    thead th{
+      text-align:left;
+      font-size:13px;color:var(--muted);
+      padding:10px 12px;
+      border-bottom:1px solid var(--border);
+    }
+    tbody td{
+      padding:12px 12px;
+      border-bottom:1px solid rgba(240,215,231,.7);
+      vertical-align:top;
+      font-size:14px;
+    }
+    tbody tr:last-child td{border-bottom:none}
+    .mono{font-family:var(--mono); font-size:13px}
+    .msg{
+      max-width:420px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .toast{
+      position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+      min-width:260px; max-width:92vw;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:#fff;
+      box-shadow:0 12px 30px rgba(20,10,40,.16);
+      display:none; align-items:flex-start; gap:10px;
+    }
+    .toast.show{display:flex}
+    .toast b{display:block;margin-bottom:3px}
+    .spark{font-size:20px; line-height:1}
+    .small{font-size:13px;color:var(--muted)}
+    .row2{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+    .link{
+      color:var(--accent2);
+      text-decoration:none;
+      font-weight:700;
+    }
+    .link:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>Contact Form Dashboard 🦄🍓</h1>
+        <div class="sub">
+          <span class="pill">S3 static site</span>
+          <span class="pill">reads from API Gateway</span>
+          <span class="pill"><span id="statusDot" class="dot idle"></span><span id="statusText">Idle</span></span>
+        </div>
+      </div>
+      <div class="rightPills">
+        <span class="pill">UTC now: <span class="mono" id="utcNow">—</span></span>
+        <span class="pill">✨ Tip: endpoint saved in your browser (localStorage)</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="k">Total (loaded)</div>
+        <div class="v" id="totalLoaded">—</div>
+      </div>
+      <div class="card">
+        <div class="k">Today</div>
+        <div class="v" id="todayCount">—</div>
+      </div>
+      <div class="card">
+        <div class="k">Last 7 days</div>
+        <div class="v" id="last7Count">—</div>
+      </div>
+      <div class="card">
+        <div class="k">Limit</div>
+        <div class="controls">
+          <input id="limitInput" type="number" min="1" max="100" value="50" />
+          <button class="btnAccent" id="reloadBtn">Reload</button>
+          <button class="btnTest" id="testBtn">Test 🪄</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card big">
+      <div class="k">API endpoint (submissions)</div>
+      <textarea id="endpointBox" spellcheck="false"></textarea>
+      <div class="hintRow">
+        <span class="chip">CORS must allow <b>GET/OPTIONS</b></span>
+        <span class="chip">Test button posts to <b>/contact</b> (derived automatically)</span>
+        <span class="chip">Example: <span class="mono">.../prod/submissions?limit=50</span></span>
+      </div>
+      <div class="hintRow row2">
+        <div class="small">Your S3 site: <a class="link" href="#" id="selfLink">open</a></div>
+        <div class="small">API base derived from submissions URL → <span class="mono" id="derivedBase">—</span></div>
+      </div>
+    </div>
+
+    <div class="card tableCard">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:210px;">Time (UTC)</th>
+            <th style="width:140px;">Name</th>
+            <th style="width:210px;">Email</th>
+            <th style="width:160px;">Subject</th>
+            <th>Message</th>
+            <th style="width:110px;">IP</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td class="small" colspan="6">No data loaded yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <div class="spark" id="toastIcon">✨</div>
+    <div>
+      <b id="toastTitle">Spell cast!</b>
+      <div class="small" id="toastBody">…</div>
+    </div>
+  </div>
+
+<script>
+  // === Defaults (your real API) ===
+  const DEFAULT_SUBMISSIONS =
+    "https://8ego95k5bc.execute-api.us-east-1.amazonaws.com/prod/submissions?limit=50";
+
+  const LS_KEY = "contact_dashboard_submissions_endpoint";
+
+  // 20 вариантов на поле — как ты просила: единороги, клубника, магия 💅
+  const NAMES = [
+    "Unicorn QA", "Strawberry Sorceress", "Glitter Goblin", "Moonlit Unicorn",
+    "Berry Wizard", "Rainbow Wrangler", "Sparkle Engineer", "Magic SRE",
+    "Cloud Enchantress", "Pink Nebula", "Starlight Dev", "Frosted Pixie",
+    "Aurora Analyst", "Fairy Firewall", "Cupcake Mage", "Cosmic Tester",
+    "Mystic Monitor", "Lavender Ops", "Cherry Charm", "Potion Brewer"
+  ];
+
+  const SUBJECTS = [
+    "✨ Spell test", "🍓 Strawberry incident", "🦄 Unicorn ping", "🔮 Crystal status",
+    "🌈 Rainbow report", "🪄 Wand wave", "💎 Glitter alert", "🌙 Moonbeam message",
+    "🔥 Dragon-free deploy", "🧁 Cupcake telemetry", "🌸 Blooming logs",
+    "⚡ Sparkle spike", "🧪 Potion experiment", "🎀 Pink protocol", "🫧 Bubble trace",
+    "🧠 Telepathic ticket", "🧊 Frosty anomaly", "🪐 Cosmic check-in",
+    "🍬 Candy metrics", "🧿 Mystic signal"
+  ];
+
+  const MESSAGES = [
+    "Summoning a tiny unicorn to validate the pipeline.",
+    "Strawberries report: everything is deliciously operational.",
+    "A glitter packet was detected in the logs. Approve?",
+    "Magic latency is stable. Wand is warmed up.",
+    "Hello from the rainbow edge — sending sparkly telemetry.",
+    "Potion brewed successfully. No dragons were harmed.",
+    "Spell status: green. Confidence: suspiciously high.",
+    "Cloud sprites delivered this message with care.",
+    "Requesting immediate sprinkle injection into the dashboard.",
+    "Unicorn hooves confirmed: CORS is behaving.",
+    "I cast ‘Increase Observability’… it’s super effective.",
+    "Berry storm warning: 2% chance of confetti.",
+    "The moon says: ship it. The sun says: add tests.",
+    "Fae debugging session complete. Root cause: vibes.",
+    "Deploy succeeded. Glitter level: acceptable.",
+    "New prophecy: your API will be stable and cute.",
+    "Sending a strawberry-shaped heartbeat.",
+    "Audit log whispers: everything is compliant-ish.",
+    "Metrics say: you’re iconic. Also CPU is fine.",
+    "Enchanted request: please store more magic in DynamoDB."
+  ];
+
+  function rand(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+  function nowUtcString(){
+    return new Date().toISOString().replace("T"," ").replace("Z"," UTC");
+  }
+
+  function setStatus(kind, text){
+    const dot = document.getElementById("statusDot");
+    const t = document.getElementById("statusText");
+    dot.classList.remove("idle","ok","bad");
+    dot.classList.add(kind);
+    t.textContent = text;
+  }
+
+  function toast(title, body, icon="✨"){
+    const el = document.getElementById("toast");
+    document.getElementById("toastTitle").textContent = title;
+    document.getElementById("toastBody").textContent = body;
+    document.getElementById("toastIcon").textContent = icon;
+    el.classList.add("show");
+    setTimeout(()=>el.classList.remove("show"), 3600);
+  }
+
+  function parseApiBase(submissionsUrl){
+    // submissionsUrl example:
+    // https://.../prod/submissions?limit=50
+    try{
+      const u = new URL(submissionsUrl);
+      // remove /submissions from pathname (keep stage)
+      // pathname like /prod/submissions
+      const parts = u.pathname.split("/").filter(Boolean);
+      // expects ["prod","submissions"]
+      if(parts.length >= 2){
+        const stage = parts[0];
+        return `${u.origin}/${stage}`;
+      }
+      return `${u.origin}${u.pathname.replace(/\/submissions.*/, "")}`;
+    }catch(e){
+      return null;
+    }
+  }
+
+  function formatUtcFromMillis(ms){
+    const d = new Date(Number(ms));
+    // Keep it UTC-looking
+    return d.toISOString().replace("T"," ").replace("Z"," UTC");
+  }
+
+  function startOfUtcDay(date){
+    const d = new Date(date);
+    return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+  }
+
+  function countTodayAndLast7(items){
+    const now = new Date();
+    const todayStart = startOfUtcDay(now);
+    const sevenDaysAgo = todayStart - 7*24*60*60*1000;
+
+    let today = 0, last7 = 0;
+    for(const it of items){
+      const t = Number(it.createdAt || 0);
+      if(!t) continue;
+      if(t >= todayStart) today++;
+      if(t >= sevenDaysAgo) last7++;
+    }
+    return {today, last7};
+  }
+
+  async function loadSubmissions(){
+    const endpoint = document.getElementById("endpointBox").value.trim();
+    if(!endpoint){
+      toast("Spell fizzled 💥", "No submissions endpoint set.", "💥");
+      return;
+    }
+
+    // persist
+    localStorage.setItem(LS_KEY, endpoint);
+
+    const limit = clampLimit();
+    const u = new URL(endpoint);
+    u.searchParams.set("limit", String(limit));
+
+    setStatus("idle", "Loading…");
+    try{
+      const res = await fetch(u.toString(), { method:"GET" });
+      if(!res.ok){
+        const txt = await res.text().catch(()=> "");
+        throw new Error(`HTTP ${res.status} ${txt}`.trim());
+      }
+      const data = await res.json();
+      const items = (data.items || []);
+      render(items);
+      setStatus("ok", "Loaded");
+    }catch(err){
+      console.error(err);
+      setStatus("bad", "Failed");
+      toast("Spell fizzled 💥", "Failed to fetch", "💥");
+    }
+  }
+
+  function clampLimit(){
+    const inp = document.getElementById("limitInput");
+    let v = parseInt(inp.value || "50", 10);
+    if(Number.isNaN(v)) v = 50;
+    v = Math.max(1, Math.min(100, v));
+    inp.value = String(v);
+    return v;
+  }
+
+  function render(items){
+    // sort newest first
+    items.sort((a,b)=> Number(b.createdAt||0) - Number(a.createdAt||0));
+
+    const tb = document.getElementById("tbody");
+    tb.innerHTML = "";
+
+    document.getElementById("totalLoaded").textContent = String(items.length);
+
+    const {today, last7} = countTodayAndLast7(items);
+    document.getElementById("todayCount").textContent = String(today);
+    document.getElementById("last7Count").textContent = String(last7);
+
+    if(items.length === 0){
+      tb.innerHTML = `<tr><td class="small" colspan="6">No submissions found yet.</td></tr>`;
+      return;
+    }
+
+    for(const it of items){
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="mono">${escapeHtml(formatUtcFromMillis(it.createdAt))}</td>
+        <td>${escapeHtml(it.name || "")}</td>
+        <td class="mono">${escapeHtml(it.email || "")}</td>
+        <td>${escapeHtml(it.subject || "")}</td>
+        <td class="msg" title="${escapeHtml(it.message || "")}">${escapeHtml(it.message || "")}</td>
+        <td class="mono">${escapeHtml(it.sourceIp || "")}</td>
+      `;
+      tb.appendChild(tr);
+    }
+  }
+
+  function escapeHtml(s){
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  async function castTestSpell(){
+    const endpoint = document.getElementById("endpointBox").value.trim();
+    if(!endpoint){
+      toast("Spell fizzled 💥", "No submissions endpoint set.", "💥");
+      return;
+    }
+
+    const base = parseApiBase(endpoint);
+    if(!base){
+      toast("Spell fizzled 💥", "Could not derive /contact endpoint.", "💥");
+      return;
+    }
+    const contactUrl = `${base}/contact`;
+
+    const payload = {
+      name: rand(NAMES),
+      email: `magic+${Math.floor(Math.random()*9999)}@strawberry.dev`,
+      subject: rand(SUBJECTS),
+      message: rand(MESSAGES)
+    };
+
+    setStatus("idle", "Casting…");
+    try{
+      const res = await fetch(contactUrl, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(payload)
+      });
+
+      if(!res.ok){
+        const txt = await res.text().catch(()=> "");
+        throw new Error(`HTTP ${res.status} ${txt}`.trim());
+      }
+
+      const data = await res.json().catch(()=> ({}));
+      setStatus("ok", "Sent");
+      toast("Spell cast 🦄✨", `SubmissionId: ${data.submissionId || "?"}`, "🦄");
+
+      // Reload after a short delay so DynamoDB scan catches it
+      setTimeout(loadSubmissions, 650);
+
+    }catch(err){
+      console.error(err);
+      setStatus("bad", "Failed");
+      toast("Spell fizzled 💥", "Failed to fetch", "💥");
+    }
+  }
+
+  // boot
+  function boot(){
+    document.getElementById("selfLink").href = location.href;
+    document.getElementById("utcNow").textContent = nowUtcString();
+    setInterval(()=>document.getElementById("utcNow").textContent = nowUtcString(), 250);
+
+    const saved = localStorage.getItem(LS_KEY);
+    const box = document.getElementById("endpointBox");
+    box.value = saved || DEFAULT_SUBMISSIONS;
+
+    const base = parseApiBase(box.value);
+    document.getElementById("derivedBase").textContent = base ? base : "—";
+
+    box.addEventListener("input", ()=>{
+      const b = parseApiBase(box.value.trim());
+      document.getElementById("derivedBase").textContent = b ? b : "—";
+    });
+
+    document.getElementById("reloadBtn").addEventListener("click", loadSubmissions);
+    document.getElementById("testBtn").addEventListener("click", castTestSpell);
+
+    // first load
+    loadSubmissions();
+  }
+
+  boot();
+</script>
+</body>
+</html>

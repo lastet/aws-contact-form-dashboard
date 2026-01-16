@@ -1,0 +1,14 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowSendEmailFromVerifiedIdentity",
+      "Effect": "Allow",
+      "Action": [
+        "ses:SendEmail",
+        "ses:SendRawEmail"
+      ],
+      "Resource": "arn:aws:ses:us-east-1:866981371378:identity/lastetbastet@gmail.com"
+    }
+  ]
+}
