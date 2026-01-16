@@ -4,6 +4,9 @@ A fully serverless contact form system with a real-time dashboard, built using A
 
 This project demonstrates how to design, deploy, and operate a lightweight production-ready inbox without traditional servers.
 
+http://contact-dashboard-866981371378-q2172j.s3-website-us-east-1.amazonaws.com/
+
+
 ## ✨ Features
 
 - Serverless contact form backend (AWS Lambda)
