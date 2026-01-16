@@ -65,27 +65,25 @@ Secrets and sensitive values are intentionally excluded.
 
 
 
+### Project structure
 
+```text
 aws-contact-form-dashboard/
-│
 ├── dashboard/
 │   ├── index.html
 │   ├── styles.css
 │   └── app.js
-│
 ├── lambda/
 │   ├── writer/
 │   │   └── lambda_function.py
 │   └── reader/
 │       └── lambda_reader.py
-│
 ├── infra/
-│   ├── iam/
-│   │   └── policies.json
-│   └── notes.md
-│
+│   └── iam/
+│       └── policies.json
+├── notes.md
 ├── screenshots/
 │   └── dashboard.png
-│
 ├── README.md
 └── .gitignore
+
